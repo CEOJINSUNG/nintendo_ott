@@ -6,3 +6,7 @@ pluginManagement {
 	}
 }
 rootProject.name = 'nintendo_ott'
+include 'api'
+include 'batch'
+include 'core'
+
