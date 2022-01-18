@@ -3,6 +3,7 @@ package com.multi.module.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,6 +24,12 @@ public class Party extends BaseTime {
     private List<UserParty> userParties = new ArrayList<>();
 
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    private Bank bank; // 은행 종류 출력
+    private String account;
+
+    @CreatedDate
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
