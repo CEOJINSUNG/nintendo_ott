@@ -21,81 +21,83 @@
 
 ### root build.gradle
 
-   buildscript {
-      ext {
-         springBootVersion = '2.6.2'
-         dependencyManagementVersion = '1.0.11.RELEASE'
-      }
-      repositories {
-         mavenCentral()
-      }
-      dependencies {
+      buildscript {
+         ext {
+            springBootVersion = '2.6.2'
+            dependencyManagementVersion = '1.0.11.RELEASE'
+         }
+         repositories {
+            mavenCentral()
+         }
          dependencies {
-            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-            classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
-         }
-      }
-   }
-
-   subprojects {
-      apply plugin: 'java'
-      apply plugin: 'org.springframework.boot'
-      apply plugin: 'io.spring.dependency-management'
-
-      group = 'com.multi.module'
-      version = '0.0.1-SNAPSHOT'
-      sourceCompatibility = 11
-
-      repositories {
-         mavenCentral()
-      }
-
-      configurations {
-         compileOnly {
-            extendsFrom annotationProcessor
+            dependencies {
+               classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+               classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+            }
          }
       }
 
-      // 공통 세팅 입력
-      dependencies {
-         implementation 'org.springframework.boot:spring-boot-starter'
-         implementation 'org.springframework.boot:spring-boot-starter-webflux'
-         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-         implementation 'org.springframework.boot:spring-boot-starter-batch'
-         implementation "io.r2dbc:r2dbc-pool"
-         runtimeOnly "dev.miku:r2dbc-mysql"
-         runtimeOnly "mysql:mysql-connector-java"
-         compileOnly 'org.projectlombok:lombok'
-         developmentOnly 'org.springframework.boot:spring-boot-devtools'
-         annotationProcessor 'org.projectlombok:lombok'
-         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-         testImplementation 'org.springframework.batch:spring-batch-test'
+      subprojects {
+         apply plugin: 'java'
+         apply plugin: 'org.springframework.boot'
+         apply plugin: 'io.spring.dependency-management'
+
+         group = 'com.multi.module'
+         version = '0.0.1-SNAPSHOT'
+         sourceCompatibility = 11
+
+         repositories {
+            mavenCentral()
+         }
+
+         configurations {
+            compileOnly {
+               extendsFrom annotationProcessor
+            }
+         }
+
+         // 공통 세팅 입력
+         dependencies {
+            implementation 'org.springframework.boot:spring-boot-starter'
+            implementation 'org.springframework.boot:spring-boot-starter-webflux'
+            implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+            implementation 'org.springframework.boot:spring-boot-starter-batch'
+            implementation "io.r2dbc:r2dbc-pool"
+            runtimeOnly "dev.miku:r2dbc-mysql"
+            runtimeOnly "mysql:mysql-connector-java"
+            compileOnly 'org.projectlombok:lombok'
+            developmentOnly 'org.springframework.boot:spring-boot-devtools'
+            annotationProcessor 'org.projectlombok:lombok'
+            testImplementation 'org.springframework.boot:spring-boot-starter-test'
+            testImplementation 'org.springframework.batch:spring-batch-test'
+         }
+
+         test {
+            useJUnitPlatform()
+         }
       }
 
-      test {
-         useJUnitPlatform()
+      project(':core') {
+         dependencies {
+
+         }
       }
-   }
 
-   project(':core') {
-      dependencies {
-
+      project(':api') {
+         dependencies {
+            implementation project(':core')
+         }
       }
-   }
 
-   project(':api') {
-      dependencies {
-         implementation project(':core')
+      project(':batch') {
+         dependencies {
+            implementation project(':core')
+         }
       }
-   }
 
-   project(':batch') {
-      dependencies {
-         implementation project(':core')
-      }
-   }
+### core build.gradle 추가
 
-### core build.gradle
+- 왜냐하면 core에다가는 domain, repository만 설정하고 수정하고 api 실행하는 곳은 다 api, batch라 CoreApplication을 안만들기 때문이다.
 
-  bootJar { enabled = false }
-  jar { enabled = true }
+      bootJar { enabled = false }
+      jar { enabled = true }
