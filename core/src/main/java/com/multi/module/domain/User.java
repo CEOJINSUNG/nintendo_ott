@@ -25,10 +25,6 @@ public class User extends BaseTime {
     private String profileImage;
     private String nintendoId;
 
-    @Enumerated(EnumType.STRING)
-    private Bank bank; // 은행 종류 출력
-    private String account;
-
     @OneToMany
     private List<UserParty> userParties = new ArrayList<>();
 }
