@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "user")
 @Getter
@@ -27,4 +29,6 @@ public class User extends BaseTime {
     private Bank bank; // 은행 종류 출력
     private String account;
 
+    @OneToMany
+    private List<UserParty> userParties = new ArrayList<>();
 }
