@@ -1,4 +1,4 @@
-package com.multi.module.domain.auth;
+package com.multi.module.domain;
 
 import lombok.Getter;
 
