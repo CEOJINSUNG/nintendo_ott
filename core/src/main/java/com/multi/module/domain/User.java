@@ -27,4 +27,14 @@ public class User extends BaseTime {
 
     @OneToMany
     private List<UserParty> userParties = new ArrayList<>();
+
+    //회원 등록
+    public static User createUser(Long id, String name, String email, String profileImage) {
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setEmail(email);
+        user.setProfileImage(profileImage);
+        return user;
+    }
 }
