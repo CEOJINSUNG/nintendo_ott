@@ -11,10 +11,4 @@ import reactor.core.publisher.Mono;
 @RestController("/party")
 public class PartyController {
 
-    private PartyRepository partyRepository;
-
-    @PostMapping("/create")
-    public Mono<Party> createParty(@PathVariable ) {
-
-    }
 }
