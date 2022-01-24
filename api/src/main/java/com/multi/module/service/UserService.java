@@ -30,7 +30,7 @@ public class UserService {
             e.printStackTrace();
         }
         JSONObject jsonObject = (JSONObject) obj;
-        Long id = (Long) jsonObject.get("id");
+        int id = (int) jsonObject.get("id");
         JSONObject properties = (JSONObject) jsonObject.get("properties");
         String nickname = (String) properties.get("nickname");
         String email = (String) properties.get("email");
