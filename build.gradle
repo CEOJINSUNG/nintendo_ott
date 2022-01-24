@@ -45,6 +45,9 @@ subprojects {
 		developmentOnly 'org.springframework.boot:spring-boot-devtools'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.batch:spring-batch-test'
+		implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+		implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+		implementation group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version: '3.0.3'
 	}
 
 	test {
@@ -60,8 +63,8 @@ project(':core') {
 project(':api') {
 	dependencies {
 		implementation project(':core')
-		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-		implementation 'org.springframework.boot:spring-boot-starter-security'
+//		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//		implementation 'org.springframework.boot:spring-boot-starter-security'
 		implementation 'org.springframework.boot:spring-boot-starter-validation'
 		implementation 'org.springframework.boot:spring-boot-starter-web'
 		implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
