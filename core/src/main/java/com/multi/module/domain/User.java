@@ -16,20 +16,21 @@ import java.util.List;
 public class User extends BaseTime {
     @Id @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @NonNull
     private String name;
-    @NonNull
+
     private String email;
+
     private String profileImage;
+
     private String nintendoId;
 
     @OneToMany
     private List<UserParty> userParties = new ArrayList<>();
 
     //회원 등록
-    public static User createUser(Long id, String name, String email, String profileImage) {
+    public static User createUser(int id, String name, String email, String profileImage) {
         User user = new User();
         user.setId(id);
         user.setName(name);
