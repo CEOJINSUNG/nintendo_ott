@@ -1,0 +1,14 @@
+type User {
+    id: ID!
+    name: String!
+    profile_image: String!
+    nintendo_id: String
+}
+
+type Query {
+    loginUser(code: String!): User
+}
+
+type Mutation {
+    logoutUser(id: String!): User
+}
