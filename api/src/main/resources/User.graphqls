@@ -2,6 +2,7 @@ type User {
     user_id: ID!
     name: String!
     profile_image: String!
+    token: String!
     nintendo_id: String
 }
 
