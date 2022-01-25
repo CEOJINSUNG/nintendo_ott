@@ -48,6 +48,7 @@ subprojects {
 		implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
 		implementation 'com.graphql-java:graphql-java-tools:5.2.4'
 		implementation group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version: '3.0.3'
+		implementation 'org.apache.httpcomponents:httpclient:4.5'
 	}
 
 	test {
