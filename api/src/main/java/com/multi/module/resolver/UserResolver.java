@@ -17,18 +17,22 @@ public class UserResolver implements GraphQLResolver<User> {
     }
 
     public Long getUser_id(User user) {
-        return userRepository.findUserByKakaoId(user.getKakaoId()).get().getId();
+        return userRepository.findUserByKakaoId(user.getKakaoId()).getId();
     }
 
     public String getName(User user) {
-        return userRepository.findUserByKakaoId(user.getKakaoId()).get().getName();
+        return userRepository.findUserByKakaoId(user.getKakaoId()).getName();
     }
 
     public String getProfile_image(User user) {
-        return userRepository.findUserByKakaoId(user.getKakaoId()).get().getProfileImage();
+        return userRepository.findUserByKakaoId(user.getKakaoId()).getProfileImage();
+    }
+
+    public String getToken(User user) {
+        return userRepository.findUserByKakaoId(user.getKakaoId()).getToken();
     }
 
     public String getNintendo_id(User user) {
-        return userRepository.findUserByKakaoId(user.getKakaoId()).get().getNintendoId();
+        return userRepository.findUserByKakaoId(user.getKakaoId()).getNintendoId();
     }
 }
