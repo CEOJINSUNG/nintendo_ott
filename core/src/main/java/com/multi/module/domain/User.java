@@ -1,7 +1,6 @@
 package com.multi.module.domain;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,25 +15,24 @@ import java.util.List;
 public class User extends BaseTime {
     @Id @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
-
-    private String email;
 
     private String profileImage;
 
     private String nintendoId;
 
+    private Long kakaoId;
+
     @OneToMany
     private List<UserParty> userParties = new ArrayList<>();
 
     //회원 등록
-    public static User createUser(int id, String name, String email, String profileImage) {
+    public static User createUser(Long kakaoId, String name, String profileImage) {
         User user = new User();
-        user.setId(id);
+        user.setKakaoId(kakaoId);
         user.setName(name);
-        user.setEmail(email);
         user.setProfileImage(profileImage);
         return user;
     }
