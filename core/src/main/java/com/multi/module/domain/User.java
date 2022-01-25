@@ -25,15 +25,18 @@ public class User extends BaseTime {
 
     private Long kakaoId;
 
+    private String token;
+
     @OneToMany
     private List<UserParty> userParties = new ArrayList<>();
 
     //회원 등록
-    public static User createUser(Long kakaoId, String name, String profileImage) {
+    public static User createUser(Long kakaoId, String name, String profileImage, String token) {
         User user = new User();
         user.setKakaoId(kakaoId);
         user.setName(name);
         user.setProfileImage(profileImage);
+        user.setToken(token);
         return user;
     }
 }
