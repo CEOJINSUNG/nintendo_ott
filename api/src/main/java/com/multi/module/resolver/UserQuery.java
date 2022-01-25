@@ -14,7 +14,7 @@ public class UserQuery implements GraphQLQueryResolver {
 
     private final UserService userService;
 
-    public User loginUser(String code) {
+    public User loginUser(@RequestParam String code) {
         return userService.oauth2AuthorizationKakao(code);
     }
 
