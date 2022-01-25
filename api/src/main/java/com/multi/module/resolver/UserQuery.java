@@ -5,7 +5,7 @@ import com.multi.module.domain.User;
 import com.multi.module.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Component
