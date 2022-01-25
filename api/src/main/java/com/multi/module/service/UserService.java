@@ -21,7 +21,9 @@ public class UserService {
 
     public User oauth2AuthorizationKakao(String code) {
         AuthorizationKakao authorization = oauth2Kakao.callTokenApi(code);
+        System.out.println(authorization.getAccess_token());
         String userInfoFromKakao = oauth2Kakao.callGetUserByAccessToken(authorization.getAccess_token());
+        System.out.println(userInfoFromKakao);
         JSONParser parser = new JSONParser();
         Object obj = new Object();
         try {
@@ -30,23 +32,26 @@ public class UserService {
             e.printStackTrace();
         }
         JSONObject jsonObject = (JSONObject) obj;
-        int id = (int) jsonObject.get("id");
+        Long kakaoId = (Long) jsonObject.get("id");
         JSONObject properties = (JSONObject) jsonObject.get("properties");
         String nickname = (String) properties.get("nickname");
-        String email = (String) properties.get("email");
-        String profileImage = (String) properties.get("profileImage");
+        String profileImage = (String) properties.get("profile_image");
+        System.out.println(nickname);
+        System.out.println(profileImage);
 
-        User user = User.createUser(id, nickname, email, profileImage);
-
-        validateDuplicateUser(user);
-        userRepository.save(user);
-        return user;
+        User user = User.createUser(kakaoId, nickname, profileImage);
+        System.out.println(user.toString());
+        return validateDuplicateUser(user);
     }
 
-    private void validateDuplicateUser(User user) {
-        Optional<User> findUser = userRepository.findById(user.getId());
+    private User validateDuplicateUser(User user) {
+        Optional<User> findUser = userRepository.findUserByKakaoId(user.getKakaoId());
         if (findUser.isPresent()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다."); }
+            return user;
+        } else {
+            userRepository.save(user);
+            return user;
+        }
     }
 
 }
