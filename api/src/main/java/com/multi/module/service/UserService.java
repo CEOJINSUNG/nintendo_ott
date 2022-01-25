@@ -39,19 +39,21 @@ public class UserService {
         System.out.println(nickname);
         System.out.println(profileImage);
 
-        User user = User.createUser(kakaoId, nickname, profileImage);
+        User user = User.createUser(kakaoId, nickname, profileImage, authorization.getAccess_token());
         System.out.println(user.toString());
         return validateDuplicateUser(user);
     }
 
     private User validateDuplicateUser(User user) {
-        Optional<User> findUser = userRepository.findUserByKakaoId(user.getKakaoId());
-        if (findUser.isPresent()) {
-            return user;
+        User findUser = userRepository.findUserByKakaoId(user.getKakaoId());
+        User a = null;
+        if (findUser != a) {
+            findUser.setToken(user.getToken());
+            userRepository.save(findUser);
+            return findUser;
         } else {
             userRepository.save(user);
             return user;
         }
     }
-
 }
