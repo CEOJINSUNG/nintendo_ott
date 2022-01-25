@@ -1,5 +1,5 @@
 type User {
-    id: ID!
+    user_id: ID!
     name: String!
     profile_image: String!
     nintendo_id: String
