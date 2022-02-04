@@ -8,9 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final Oauth2Kakao oauth2Kakao;
 
-    public User oauth2AuthorizationKakao(String code) {
+    public ResponseEntity<User> oauth2AuthorizationKakao(String code) {
         AuthorizationKakao authorization = oauth2Kakao.callTokenApi(code);
         System.out.println(authorization.getAccess_token());
         String userInfoFromKakao = oauth2Kakao.callGetUserByAccessToken(authorization.getAccess_token());
@@ -36,24 +37,22 @@ public class UserService {
         JSONObject properties = (JSONObject) jsonObject.get("properties");
         String nickname = (String) properties.get("nickname");
         String profileImage = (String) properties.get("profile_image");
-        System.out.println(nickname);
-        System.out.println(profileImage);
 
-        User user = User.createUser(kakaoId, nickname, profileImage, authorization.getAccess_token());
-        System.out.println(user.toString());
-        return validateDuplicateUser(user);
+        User user = User.createUser(kakaoId, nickname, profileImage);
+        return validateDuplicateUser(user, authorization.getAccess_token());
     }
 
-    private User validateDuplicateUser(User user) {
+    private ResponseEntity<User> validateDuplicateUser(User user, String token) {
         User findUser = userRepository.findUserByKakaoId(user.getKakaoId());
         User a = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("token", token);
         if (findUser != a) {
-            findUser.setToken(user.getToken());
             userRepository.save(findUser);
-            return findUser;
+            return new ResponseEntity<User>(findUser, headers, HttpStatus.OK);
         } else {
             userRepository.save(user);
-            return user;
+            return new ResponseEntity<User>(findUser, headers, HttpStatus.OK);
         }
     }
 }
