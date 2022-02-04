@@ -1,13 +1,12 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    driver-class-name: org.h2.Driver
-#    url: jdbc:mysql://database1.cymo4x1xzhys.ap-northeast-2.rds.amazonaws.com:3306/nintendo-ott
-#    username: admin
-#    password: nintendo
-#    url:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    driver-class-name: org.h2.Driver
+    url: r2dbc:mysql://database1.cymo4x1xzhys.ap-northeast-2.rds.amazonaws.com:3306/nintendo-ott
+    username: admin
+    password: nintendo
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
 #    database: mysql
