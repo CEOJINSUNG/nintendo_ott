@@ -29,6 +29,9 @@ public class Party extends BaseTime {
     private Bank bank; // 은행 종류 출력
     private String account;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @CreatedDate
     private LocalDateTime startDate;
     private LocalDateTime endDate;
