@@ -24,6 +24,7 @@ public class Party extends BaseTime {
     private List<UserParty> userParties = new ArrayList<>();
 
     private String title;
+    private Integer inviteNum;
 
     @Enumerated(EnumType.STRING)
     private Bank bank; // 은행 종류 출력
