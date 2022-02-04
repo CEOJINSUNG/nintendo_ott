@@ -6,6 +6,7 @@ import com.multi.module.repository.PartyRepository;
 import com.multi.module.repository.UserPartyRepository;
 import com.multi.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,6 +52,22 @@ public class Mutation implements GraphQLMutationResolver {
         userPartyRepository.save(userParty);
         partyRepository.save(party);
         return userPartyRepository.findUserPartiesByUser(user).getId();
+    }
+
+    //초대 가능 인원 변경
+    public JSONObject changeInviteNum(
+        @RequestParam String userId,
+        @RequestParam String partyId,
+        @RequestParam String inviteNum
+    ) {
+        Party party = partyRepository.findById(Long.parseLong(partyId)).orElse(null);
+        party.setInviteNum(Integer.parseInt(inviteNum));
+        partyRepository.save(party);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("partyId", party.getId());
+        jsonObject.put("inviteNum", party.getInviteNum());
+        return jsonObject;
     }
 
 }
