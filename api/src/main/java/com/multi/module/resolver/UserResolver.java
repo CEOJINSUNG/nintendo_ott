@@ -28,10 +28,6 @@ public class UserResolver implements GraphQLResolver<User> {
         return userRepository.findUserByKakaoId(user.getKakaoId()).getProfileImage();
     }
 
-    public String getToken(User user) {
-        return userRepository.findUserByKakaoId(user.getKakaoId()).getToken();
-    }
-
     public String getNintendo_id(User user) {
         return userRepository.findUserByKakaoId(user.getKakaoId()).getNintendoId();
     }
