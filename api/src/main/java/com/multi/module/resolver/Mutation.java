@@ -5,15 +5,19 @@ import com.multi.module.domain.*;
 import com.multi.module.repository.PartyRepository;
 import com.multi.module.repository.UserPartyRepository;
 import com.multi.module.repository.UserRepository;
+import com.multi.module.service.PartyService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class Mutation implements GraphQLMutationResolver {
 
+    private final PartyService partyService;
     private final UserRepository userRepository;
     private final PartyRepository partyRepository;
     private final UserPartyRepository userPartyRepository;
@@ -25,31 +29,22 @@ public class Mutation implements GraphQLMutationResolver {
         @RequestParam String account,
         @RequestParam String nintendoId
     ) {
-        //user 찾아 닌텐도 아이디 설정
-        User user = userRepository.findById(Long.parseLong(userId)).orElse(null);
-        user.setNintendoId(nintendoId);
+        return partyService.makeParty(
+            userId, bank, account, nintendoId, 0, Status.Waiting
+        );
+    }
 
-        //party 생성 후 bank, account, status 세팅
-        Party party = new Party();
-        for (Bank bank1: Bank.values()) {
-            if (bank1.name().equalsIgnoreCase(bank)){
-                party.setBank(bank1);
-                break;
-            }
-        }
-        party.setAccount(account);
-        party.setStatus(Status.Waiting);
-
-        //userparty 생성 후 호스트 세팅
-        UserParty userParty = new UserParty();
-        userParty.addUser(user);
-        userParty.addParty(party);
-        userParty.setRole(Role.LEADER);
-
-        userRepository.save(user);
-        userPartyRepository.save(userParty);
-        partyRepository.save(party);
-        return userPartyRepository.findUserPartiesByUser(user).getId();
+    //초대 기능으로 파티장이 파티 등록했을 때
+    public Long makePartyWithInvite(
+        @RequestParam String userId,
+        @RequestParam String bank,
+        @RequestParam String account,
+        @RequestParam String nintendoId,
+        @RequestParam Integer inviteNum
+    ) {
+        return partyService.makeParty(
+            userId, bank, account, nintendoId, inviteNum, Status.Inviting
+        );
     }
 
     //초대 가능 인원 변경
@@ -60,7 +55,7 @@ public class Mutation implements GraphQLMutationResolver {
     ) {
         User user = userRepository.findById(Long.parseLong(userId)).orElse(null);
         UserParty userParty = userPartyRepository.findUserPartiesByUser(user);
-        if (userParty.getRole().equals(Role.LEADER)) {
+        if (userParty.getRole() == (Role.LEADER)) {
             Party party = partyRepository.findById(Long.parseLong(partyId)).orElse(null);
             party.setInviteNum(Integer.parseInt(inviteNum));
             partyRepository.save(party);
