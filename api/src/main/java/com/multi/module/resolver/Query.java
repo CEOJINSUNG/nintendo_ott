@@ -11,6 +11,7 @@ import com.multi.module.repository.UserPartyRepository;
 import com.multi.module.repository.UserRepository;
 import com.multi.module.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,7 +27,7 @@ public class Query implements GraphQLQueryResolver {
     private final PartyRepository partyRepository;
     private final UserPartyRepository userPartyRepository;
 
-    public User loginUser(@RequestParam String code) {
+    public ResponseEntity<User> loginUser(@RequestParam String code) {
         return userService.oauth2AuthorizationKakao(code);
     }
 
