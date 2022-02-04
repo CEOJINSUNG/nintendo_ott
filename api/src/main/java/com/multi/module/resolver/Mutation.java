@@ -10,15 +10,13 @@ import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class Mutation implements GraphQLMutationResolver {
 
-    private UserRepository userRepository;
-    private PartyRepository partyRepository;
-    private UserPartyRepository userPartyRepository;
+    private final UserRepository userRepository;
+    private final PartyRepository partyRepository;
+    private final UserPartyRepository userPartyRepository;
 
     //초대 기능 없이 파티장이 파티 등록했을 때
     public Long makePartyNoInvite(
@@ -60,14 +58,18 @@ public class Mutation implements GraphQLMutationResolver {
         @RequestParam String partyId,
         @RequestParam String inviteNum
     ) {
-        Party party = partyRepository.findById(Long.parseLong(partyId)).orElse(null);
-        party.setInviteNum(Integer.parseInt(inviteNum));
-        partyRepository.save(party);
+        User user = userRepository.findById(Long.parseLong(userId)).orElse(null);
+        UserParty userParty = userPartyRepository.findUserPartiesByUser(user);
+        if (userParty.getRole().equals(Role.LEADER)) {
+            Party party = partyRepository.findById(Long.parseLong(partyId)).orElse(null);
+            party.setInviteNum(Integer.parseInt(inviteNum));
+            partyRepository.save(party);
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("partyId", party.getId());
-        jsonObject.put("inviteNum", party.getInviteNum());
-        return jsonObject;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("partyId", party.getId());
+            jsonObject.put("inviteNum", party.getInviteNum());
+            return jsonObject;
+        }
+        return null;
     }
-
 }
