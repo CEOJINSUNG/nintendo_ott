@@ -30,6 +30,18 @@ public class Query implements GraphQLQueryResolver {
         return userService.oauth2AuthorizationKakao(code);
     }
 
+    // 초대경로 없이 파티원이 등록한 경우
+    public Long GuestNoInvite(
+        @RequestParam String userId,
+        @RequestParam String payToken,
+        @RequestParam String nintendoId
+    ) {
+        User user = userRepository.findById(Long.parseLong(userId)).orElse(null);
+
+        return null;
+    }
+
+    // 내 파티정보 불러오기
     public MyPartyDto getMyParty(
         @RequestParam String userId,
         @RequestParam String partyId
