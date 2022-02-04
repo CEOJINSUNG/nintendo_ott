@@ -3,16 +3,16 @@ spring:
 #    url: jdbc:h2:mem:testdb
 #    username: sa
 #    driver-class-name: org.h2.Driver
-    url: r2dbc:mysql://database1.cymo4x1xzhys.ap-northeast-2.rds.amazonaws.com:3306/nintendo-ott
+    url: jdbc:mysql://database1.cymo4x1xzhys.ap-northeast-2.rds.amazonaws.com:3306/nintendo-ott
     username: admin
     password: nintendo
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
-#    database: mysql
+    database: mysql
     hibernate:
       ddl-auto: create
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
   profiles:
     include: core
@@ -30,10 +30,10 @@ graphql:
     mapping: /graphql
     cors-enabled: false
     cors:
-      allowed-origins: http://localhost:3000
+#      allowed-origins: http://localhost:3000
       allowed-methods: GET, HEAD, POST, PATCH
     exception-handlers-enabled: true
     context-setting: PER_REQUEST_WITH_INSTRUMENTATION
   tools:
-    schema-location-pattern: "**/*.graphql"
+    schema-location-pattern: "**/graphql/*.graphql"
     introspection-enabled: true
