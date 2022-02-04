@@ -28,12 +28,12 @@ public class UserParty extends BaseTime {
     private String description;
 
     //연관관계 메서드
-    public void setUser(User user) {
+    public void addUser(User user) {
         this.user = user;
         user.getUserParties().add(this);
     }
 
-    public void setParty(Party party) {
+    public void addParty(Party party) {
         this.party = party;
         party.getUserParties().add(this);
     }
